@@ -11,6 +11,10 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
         var backgroundStars = [];
         var backgroundLayers = 3;
         var backgroundStarDensity = 10;
+        var MOUNTAINDENSITYLOWERBOUND = 20;
+        var MOUNTAINDENSITYUPPERBOUND = 50;
+        var backgroundTest = [];
+        var regionTest = [];
 
         var camera;
 
@@ -30,6 +34,46 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
                 }
             }
             console.log("made background stars");
+        };
+        
+        function makeBackgroundMountainLine(region, height){
+        	var distanceTraveled = 0;
+        	var offset = region.center.x; // depends on the region! ..?
+        	var density;
+        	
+        	var vector = new Vector(offset, region.h); //First edge
+        	backgroundTest.push(vector);
+        	console.log("HEIGHT: " + height);
+        	while(distanceTraveled < region.w){
+        		density = (Math.random() * (MOUNTAINDENSITYUPPERBOUND - MOUNTAINDENSITYLOWERBOUND)) + MOUNTAINDENSITYLOWERBOUND;
+        		distanceTraveled += density;
+        		console.log("adding distance... " + density);
+        		var vector = new Vector(distanceTraveled + offset, height + Math.random() * 20); // replace with noise
+        		console.log(vector);
+        		backgroundTest.push(vector);
+        	}
+        	
+        	var vector = new Vector(offset + region.w, region.h); //End edge
+        	backgroundTest.push(vector);
+        };
+        
+        function drawBackgroundMountainLine(g){
+        	g.noStroke();
+        	g.fill(1, 1, 1);
+        	var zero = new Vector(0, 0, 0);
+        	zero.drawLineTo(g, backgroundTest[2]);
+        	g.beginShape();
+        	for(var i = 0; i < backgroundTest.length; i++){
+        		var x = backgroundTest[i].x;
+        		var y = backgroundTest[i].y;
+        		x -= camera.angle.x;
+                y -= camera.angle.y;
+                x -= camera.center.x;
+                y -= camera.center.y;
+
+                g.vertex(x, y);
+        	}
+        	g.endShape();
         };
 
         function drawBackgroundStars(g) {
@@ -82,6 +126,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
             if (options.layer === 'bg') {
                 drawBackgroundStars(g);
+                drawBackgroundMountainLine(g);
             }
 
             if (options.layer === 'overlay') {
@@ -131,6 +176,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
                 spawn(obj);
             }
+            regionTest = region;
 
         }
 
@@ -168,6 +214,8 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
             makeBackgroundStars();
             generateStartRegion();
+            
+            makeBackgroundMountainLine(regionTest, regionTest.h/2);
         };
         
         function initStatistics() {
