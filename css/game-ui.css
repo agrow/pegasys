@@ -1,0 +1,135 @@
+body {
+
+}
+
+#app {
+	z-index: 0;
+	position: relative;
+}
+
+#controls {
+	z-index: 50;
+	position: relative;
+	width: 600px;
+	height: 50px;
+	float: left;
+	background-color: rgba(230, 255, 250, 1);
+}
+
+#world {
+	position: relative;
+	float: left;
+	width: 600px;
+	height: 400px;
+	background-color: rgba(50, 255, 90, 1);
+}
+
+#world_canvas {
+	width: 600px;
+	height: 400px;
+	background-color: rgba(50, 255, 90, 1);
+}
+
+#debug_controls {
+	z-index: 40;
+	position: relative;
+	background-color: rgba(155, 155, 155, 1);
+	width: 300px;
+	height: 400px;
+	float: left;
+	margin: 2px;
+}
+
+#debug_output {
+	z-index: 42;
+	position: relative;
+	background-color: rgba(155, 255, 155, 1);
+	width: 98%;
+	height: 300px;
+	float: left;
+	padding: 10px;
+	margin: 2px;
+	overflow: auto;
+}
+
+.palette {
+	z-index: 56;
+	position: static;
+	padding: 5px;
+	width: 200px;
+	height: 25px;
+	background-color: rgba(225, 235, 255, .6);
+	border-radius: 10px;
+	transition: all 0.22s;
+	overflow: hidden;
+	border: 2px solid rgba(255,255, 255, 1);
+}
+.palette:hover {
+
+	height: 300px;
+}
+
+.palette_button {
+	float: left;
+	width: 80px;
+	margin: 2px;
+	height: 20px;
+	background-color: rgba(100, 105, 110, .6);
+	border-radius: 10px;
+	border: 2px solid rgba(255,255, 255, 1);
+	box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+.palette_button:hover {
+	background-color: rgba(160, 170, 190, 1);
+	box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+}
+
+.popup {
+	z-index: 31;
+	position: absolute;
+	padding: 5px;
+	width: 25px;
+	height: 200px;
+	top: 0px;
+	left: 0px;
+	background-color: rgba(225, 235, 255, .6);
+	border-radius: 10px;
+	transition: all 0.22s;
+	overflow: hidden;
+	border: 2px solid rgba(255,255, 255, 1);
+}
+
+.popup_button {
+	float: left;
+	width: 80px;
+	margin: 2px;
+	height: 20px;
+	background-color: rgba(100, 105, 110, .6);
+	border-radius: 10px;
+	border: 2px solid rgba(255,255, 255, 1);
+	box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+}
+
+.popup_button:hover {
+	background-color: rgba(160, 170, 190, 1);
+	box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+}
+
+.closeButton {
+	z-index: 60;
+	position: absolute;
+	padding: 1px;
+	top: 0px;
+	left: 0px;
+	background-color: rgba(225, 50, 50, .6);
+	border-radius: 5px;
+	transition: all 0.22s;
+	overflow: hidden;
+	border: 2px solid rgba(155,25, 25, 1);
+}
+
+.closeButton:hover {
+	background-color: rgba(255, 10, 10, 1);
+	box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+}
