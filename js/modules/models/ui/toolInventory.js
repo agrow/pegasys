@@ -2,21 +2,21 @@
  * @author Kate Compton
  */
 
-// Inventory class
+// ToolInventory class
 // Contains tools, elements, etc
 
 define(["kcolor", "modules/models/vector", "particleTypes", "toolTypes"], function(KColor, Vector, particleTypes, toolTypes) {
     return (function() {
-        var world;
+        var universe;
         //===========================================================
         //===========================================================
 
-        // Make the Inventory class
-        function Inventory() {
-            var inventory = this;
+        // Make the ToolInventory class
+        function ToolInventory() {
+            var toolToolInventory = this;
             this.tools = [];
 
-            // What should go in the inventory
+            // What should go in the toolToolInventory
             var moveTool = new toolTypes.Move(this, "Move", "move");
             this.defaultTool = moveTool;
             this.addTool(moveTool);
@@ -28,8 +28,8 @@ define(["kcolor", "modules/models/vector", "particleTypes", "toolTypes"], functi
             }];
 
             $.each(spawnables, function(index, spawnable) {
-                var spawnTool = new toolTypes.Spawn(inventory, "Spawn " + spawnable.name, "spawn" + "_" + spawnable.name);
-                inventory.addTool(spawnTool);
+                var spawnTool = new toolTypes.Spawn(toolToolInventory, "Spawn " + spawnable.name, "spawn" + "_" + spawnable.name);
+                toolToolInventory.addTool(spawnTool);
 
             });
 
@@ -37,7 +37,7 @@ define(["kcolor", "modules/models/vector", "particleTypes", "toolTypes"], functi
         };
 
         // Shared class attributes
-        Inventory.prototype = {
+        ToolInventory.prototype = {
 
             // A method to add tools
             addTool : function(tool) {
@@ -79,7 +79,7 @@ define(["kcolor", "modules/models/vector", "particleTypes", "toolTypes"], functi
             },
         };
 
-        return Inventory;
+        return ToolInventory;
     })();
 
 });

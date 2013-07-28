@@ -54,7 +54,7 @@ define(["modules/models/vector", "kcolor", "tool", "particleTypes", "modules/mod
 
                 if (this.mode === MOVE) {
                 	// Removing touch pressed for now for UI interaction
-                    //if (pegasysGame.touch.pressed) {
+                    if (pegasysGame.touch.pressed) {
 
                         // Draw a spiral
                         g.stroke(1, 0, 1, .8);
@@ -81,7 +81,7 @@ define(["modules/models/vector", "kcolor", "tool", "particleTypes", "modules/mod
 
                         }
 
-                    //}
+                    }
                 }
 
                 if (this.mode === COLLECT) {

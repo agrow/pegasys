@@ -12,11 +12,11 @@ define(["modules/models/vector", "uparticle", "kcolor"], function(Vector, UParti
 
             // label is the human readable version
             // id is the no-spaces version
-            init : function(inventory, label, id) {
+            init : function(toolInventory, label, id) {
                 this.id = id;
 
                 this.idNumber = toolCount;
-                this.inventory = inventory;
+                this.toolInventory = toolInventory;
                 toolCount++;
 
                 this.label = label;
@@ -27,12 +27,12 @@ define(["modules/models/vector", "uparticle", "kcolor"], function(Vector, UParti
 
             activate : function() {
                 console.log("activate " + this);
-                this.inventory.setActiveTool(this);
+                this.toolInventory.setActiveTool(this);
             },
 
             deactivate : function() {
                 console.log("deactivate " + this);
-                this.inventory.activateDefaultTool();
+                this.toolInventory.activateDefaultTool();
 
             },
 

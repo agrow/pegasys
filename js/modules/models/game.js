@@ -5,7 +5,7 @@
 // Organize the game
 // Singleton pattern from here: http://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-singleton-in-javascript
 
-define(['modules/views/game_view', 'modules/controllers/game_controller', 'modules/models/world', 'modules/models/inventory', 'modules/models/ui/uiManager'], function(gameView, gameController, world, Inventory, uiManager) {
+define(['modules/views/game_view', 'modules/controllers/game_controller', 'modules/models/world', 'modules/models/ui/toolInventory', 'modules/models/ui/uiManager'], function(gameView, gameController, world, toolInventory, uiManager) {
     var game = {};
 
     var startGame = function() {
@@ -30,8 +30,8 @@ define(['modules/views/game_view', 'modules/controllers/game_controller', 'modul
         gameController.worldController.setWorldView(gameView.worldView);
         gameController.worldController.init();
 
-        game.inventory = new Inventory(world);
-        game.inventory.createPaletteDiv($("#controls"));
+        game.toolInventory = new toolInventory(world);
+        game.toolInventory.createPaletteDiv($("#controls"));
 		
 		uiManager.init();
 		

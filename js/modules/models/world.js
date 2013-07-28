@@ -121,12 +121,12 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
                 var obj;
 
-                if (Math.random() > .5) {
+                //if (Math.random() > .5) {
                     
-                } else {
+                //} else {
                     //console.log("3");
                     obj = new particleTypes.Critter();
-                }
+                //}
                 obj.position.setTo(p);
 
                 spawn(obj);
