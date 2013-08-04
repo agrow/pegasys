@@ -135,6 +135,7 @@ require.config({
         'processing' : 'libs/processing-1.4.1',
         'inheritance' : 'libs/inheritance',
         'noise' : 'libs/simplex_noise',
+        'quadtree' : 'modules/models/quadtree',
         'particleTypes' : 'modules/models/particles/particle_types',
         'toolTypes' : 'modules/models/tools/tool_types',
         'tool' : 'modules/models/tools/tool',

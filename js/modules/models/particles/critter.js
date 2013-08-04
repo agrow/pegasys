@@ -13,10 +13,11 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
 
             init : function(world) {
                 this._super(world);
+                
 				this.frontAngle = 0;
 				this.backAngle = this.frontAngle - Math.PI;
 				this.tailVector = new Vector(0, 0);
-				this.numSegments = Math.floor(Math.random()*5) + 4;
+				this.numSegments = Math.floor(Math.random()*10) + 4;
 				this.tailSegments = [];
 				for(i = 0; i < this.numSegments; i++){
 					var vect = new Vector(0, 0);
@@ -33,7 +34,7 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
             
             drawBackground: function(g, options) {
             	if(pegasysGame.drawCritters){
-					this.idColor.fill(g, -.2, 0);
+            		this.idColor.fill(g, -.2, 0);
 	                
 	                this.tailVector.setTo(0,0);
 	                var previousSize = this.radius;
@@ -56,7 +57,7 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
 	                g.noStroke();
 	                g.ellipse(0, 0, this.radius, this.radius);
 	                
-	                this.emotion.drawBackground(g, options);
+	                //this.emotion.drawBackground(g, options);
 					
 					//console.log("critter draw bg: true!");
             	}
@@ -73,14 +74,14 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
 	                this.face.drawRightProfile(g);
 	                g.popMatrix();
 	                
-	                this.emotion.drawMain(g, options);
+	                //this.emotion.drawMain(g, options);
                 }
             },
             
             drawOverlay : function(g, options) {
             	if(pegasysGame.drawCritters){
             		//console.log("critter draw overlay: true!");
-            		this.emotion.drawOverlay(g, options);
+            		//this.emotion.drawOverlay(g, options);
             	}
             }, 
             

@@ -4,7 +4,7 @@
 
 // Its the World!
 
-define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KColor, particleTypes) {
+define(["modules/models/vector", "kcolor","quadtree", "particleTypes"], function(Vector, KColor, QuadTree, particleTypes) {
 
     return (function() {
 
@@ -18,8 +18,20 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
         var camera;
 
+		var quadTree;
 
         var toAdd = [];
+
+		function makeWorldTree() {
+            console.log("Make world tree");
+            var r = 200;
+            quadTree = new QuadTree();
+            console.log(quadTree);
+            for (var i = 0; i < 0; i++) {
+                quadTree.insert(new Vector((Math.random() - .5) * 400, (Math.random() - .5) * 400));
+            }
+
+        };
 
         // These stars loop
         function makeBackgroundStars() {
@@ -59,7 +71,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
         
         function drawBackgroundMountainLine(g){
         	g.noStroke();
-        	g.fill(1, 1, 1);
+        	g.fill(.5527, .3, .79);
         	var zero = new Vector(0, 0, 0);
         	zero.drawLineTo(g, backgroundTest[2]);
         	g.beginShape();
@@ -126,7 +138,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
             if (options.layer === 'bg') {
                 drawBackgroundStars(g);
-                drawBackgroundMountainLine(g);
+                //drawBackgroundMountainLine(g);
             }
 
             if (options.layer === 'overlay') {
@@ -165,7 +177,6 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
                 p.setTo(utilities.random(-w2, w2) + region.center.x, utilities.random(-h2, h2) + region.center.y);
 
                 var obj;
-
                 //if (Math.random() > .5) {
                     
                 //} else {
@@ -182,7 +193,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
 
         function spawn(object) {
             toAdd.push(object);
-            //quadTree.insert(object);
+            quadTree.insert(object);
         }
 
         function update(time) {
@@ -197,7 +208,11 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
             //utilities.debugOutput("time.ellapsed: " + time.ellapsed);
             utilities.debugOutput("Current tool: " + pegasysGame.touch.activeTool);
 
-            //quadTree.cleanup();
+            quadTree.cleanup();
+        };
+        
+        function getQuadrantsInRegion(region, quads, g) {
+            return quadTree.getQuadrantsInRegion(region, quads, g);
         };
 
         function init() {
@@ -213,6 +228,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
             };
 
             makeBackgroundStars();
+            makeWorldTree();
             generateStartRegion();
             
             makeBackgroundMountainLine(regionTest, regionTest.h/2);
@@ -238,6 +254,7 @@ define(["modules/models/vector", "kcolor", "particleTypes"], function(Vector, KC
             update : update,
             getCamera : getCamera,
             addScrollingMovement : addScrollingMovement,
+            getQuadrantsInRegion : getQuadrantsInRegion,
             init : init,
         };
 

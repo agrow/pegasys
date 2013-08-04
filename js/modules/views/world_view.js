@@ -92,9 +92,9 @@ define(["processing", "modules/models/vector"], function(PROCESSING, Vector) {
             region.top = region.center.y - region.h / 2;
             region.bottom = region.center.y + region.h / 2;
 
-            //pegasysGame.drawQuadTree = true;
+            pegasysGame.drawQuadTree = true;
 
-            //activeQuadrants = world.getQuadrantsInRegion(region, []);
+            activeQuadrants = world.getQuadrantsInRegion(region, []);
 
             g.popMatrix();
 
@@ -102,12 +102,12 @@ define(["processing", "modules/models/vector"], function(PROCESSING, Vector) {
             // Compile all the active objects
 
             var contentsArrays = [];
-            //$.each(activeQuadrants, function(index, quad) {
-            //    contentsArrays[index] = quad.contents;
-                //  utilities.debugOutput(quad);
-                //     utilities.debugArrayOutput(contentsArrays[index]);
+            $.each(activeQuadrants, function(index, quad) {
+                contentsArrays[index] = quad.contents;
+                  //utilities.debugOutput(quad);
+                     //utilities.debugArrayOutput(contentsArrays[index]);
 
-            //});
+            });
             // Compile all the arrays of contents into a single array
             activeObjects = activeObjects.concat.apply(activeObjects, contentsArrays);
             utilities.debugOutput("Simulating/drawing: " + activeObjects.length + " objects");
