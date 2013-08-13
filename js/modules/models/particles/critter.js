@@ -26,6 +26,8 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
 				}
 				this.tailShrinkScale = .4 + .4 * Math.random();
 				//console.log("init critter " + this.idNumber + ": " + this.numSegments);
+				
+				
 				this.face = new Face.Face(this.idColor, this.idNumber);
 				
 				this.emotion = new Emotion.Emotion(world, this.radius + 20);
@@ -70,8 +72,8 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
 	                g.pushMatrix();
 	                g.rotate(this.frontAngle);
 	                
-	                //this.face.draw(g);
-	                this.face.drawRightProfile(g);
+	                this.face.draw(g); // full face
+	                //this.face.drawRightProfile(g); // profile
 	                g.popMatrix();
 	                
 	                //this.emotion.drawMain(g, options);
@@ -86,6 +88,7 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
             }, 
             
             update : function(time) {
+            	/* 
                 //this._super(time);
                 this.frontAngle = utilities.pnoise(0.1*time.total + (100*this.idNumber))*Math.PI*2;
                 
@@ -100,11 +103,6 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
 	            	var connectSpot = new Vector(this.tailSegments[i-1].x, this.tailSegments[i-1].y);
 	            	connectSpot.addPolar(this.radius/(i+1)*2, this.backAngle);
 	            	this.tailSegments[i] = this.tailSegments[i].lerp(connectSpot, .1);
-	            	/*
-	            	if(this.idNumber == 22){
-	            		utilities.debugOutput(i + ": " + this.tailSegments[i]);
-	                	utilities.debugOutput(this.tailSegments[i-1]);
-	                }*/
 	            }
 	            
 	            
@@ -115,6 +113,7 @@ define(["inheritance", "modules/models/vector", "uparticle", "modules/models/fac
                 this.totalForce.addPolar(.1, this.frontAngle);
                 this.velocity.setToPolar(10, this.frontAngle);
                 this.position.addMultiple(this.velocity, time.ellapsed);
+                */
                 
                 this.face.update(time, this.radius, this.radius);
                 

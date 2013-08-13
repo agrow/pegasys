@@ -19,7 +19,7 @@ define(["inheritance", "modules/models/vector", "noise", "kcolor"], function(Inh
                 particleCount++;
                 this.idColor = new KColor((this.idNumber * .289 + .31) % 1, 1, 1);
 
-                this.setRadius(Math.random() * 20 + 10);
+                this.setRadius(Math.random() * 20 + 70);
 
                 this.initAsParticle();
 

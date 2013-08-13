@@ -130,7 +130,43 @@ define(["inheritance", "modules/models/vector", "uparticle"], function(Inheritan
             			this.values.surprise = 1;
             			break;
             	}
-            }
+            },
+            
+            /////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////// Updating functions based on emotion! /////////////////
+            /////////////////////////////////////////////////////////////////////////////////////
+            
+            getEyeInnerScale : function(){
+            	// Default: 0.06
+            	var value = 0.06;
+            	// 0.03 is a good scared-face (pushes inner eye up)
+            	
+            	return value;
+            },
+            
+            getEyeOuterScale : function(){
+            	// Default: 0.04
+            	var value = 0.04;
+            	// 0.07 is a good scared-face (pushes outer eye down)
+            	
+            	return value;
+            },
+            
+            getEyeInnerLowerTheta : function(noiseVal){
+            	// Default: -1 + 2.5 * noiseVal
+            	var value = -1 + 2.5 * noiseVal;
+            	// -Math.PI/4 * noiseVal is a good scared-face (slightly upward angle)
+            	
+            	return value;
+            },
+            
+            getEyeOuterLowerTheta : function(noiseVal){
+            	// Default: -.1 + 2.5 * noiseVal
+            	var value = -.1 + 2.5 * noiseVal;
+            	// currently not set for scared face. 0 seems to work fine...
+            	
+            	return value;
+            },
         });
 
         return {

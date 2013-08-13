@@ -33,10 +33,18 @@ define(["inheritance", "modules/models/vector", "noise"], function(Inheritance, 
             drawBrowShape.call(this, g);
 
             //console.log("testdraw " + this.cheekWidth); // all the same
-            g.noStroke();
+            
+            g.stroke(1);
             g.fill(1);
-            var w = this.outer.x - this.inner.y;
-            g.ellipse(this.eyeCenter.x, this.eyeCenter.y, w * 1.1, w * .70);
+            this.inner.drawLineTo(g, this.outer);
+            
+            g.noStroke();
+            g.beginShape();
+            drawCrease(g, 1.3, this);
+            g.endShape();
+            g.beginShape();
+            drawCrease(g, -1.7, this);
+            g.endShape();
 
             // Eyeball
             g.pushMatrix();
@@ -55,6 +63,7 @@ define(["inheritance", "modules/models/vector", "noise"], function(Inheritance, 
             g.beginShape();
             //console.log("Lower Slants: " + this.innerLowerSlant + " //// " + this.outerLowerSlant);
             drawLashLine(g, this.innerLowerSlant, this.outerLowerSlant, 1, this);
+            //utilities.debugOutput(this.innerLowerSlant + ", " + this.outerLowerSlant);
             drawCrease(g, 1.4, this);
             g.endShape();
 
@@ -81,8 +90,9 @@ define(["inheritance", "modules/models/vector", "noise"], function(Inheritance, 
             drawLashLine(g, this.innerUpperSlant, this.outerUpperSlant, 1, this);
             g.endShape();
 
-            //drawLashControlPoints(g, this.innerUpperSlant, this.outerUpperSlant, 1, this);
-            //drawLashControlPoints(g, this.innerLowerSlant, this.outerLowerSlant, 1, this);
+            drawLashControlPoints(g, this.innerUpperSlant, this.outerUpperSlant, 1, this, 1);
+            drawLashControlPoints(g, this.innerLowerSlant, this.outerLowerSlant, 1, this, 0);
+            
 
             //g.fill(.4, 1, 1);
             //g.noStroke();
@@ -127,16 +137,23 @@ define(["inheritance", "modules/models/vector", "noise"], function(Inheritance, 
             eyeClass.inner.bezierWithRelativeControlPoints(g, eyeClass.outer, new Vector(0, creaseScalar * creaseDir), new Vector(0, creaseScalar * creaseDir))
         }
 
-        function drawLashControlPoints(g, innerSlant, outerSlant, controlStretch, eyeClass) {
-            g.fill(1);
-            g.noStroke();
+        function drawLashControlPoints(g, innerSlant, outerSlant, controlStretch, eyeClass, fill) {
+            g.fill(fill);
+            //g.noStroke();
 
             eyeClass.inner.drawCircle(g, 2);
             var test = new Vector(innerSlant.x, innerSlant.y);
             test.add(eyeClass.inner);
             test.drawCircle(g, 2);
-            eyeClass.inner.drawLineTo(g, false, test);
+            eyeClass.inner.drawLineTo(g, test);
+            
+            eyeClass.outer.drawCircle(g, 2);
+            test = new Vector(outerSlant.x, outerSlant.y);
+            test.add(eyeClass.outer);
+            test.drawCircle(g, 2);
+            eyeClass.outer.drawLineTo(g, test);
         }
+
 
         function updateEye(time, width, height, eyeFocusVector) {
             this.cheekWidth = width;
@@ -147,35 +164,49 @@ define(["inheritance", "modules/models/vector", "noise"], function(Inheritance, 
 
             //var innerScale = this.cheekWidth * 0.3; // mustache eyelids
             //var outerScale = this.cheekWidth * 0.6;
-            var innerScale = this.cheekWidth * 0.06;
-            var outerScale = this.cheekWidth * 0.03;
+            var innerScale = this.cheekWidth * 0.02; //.06 default
+            var outerScale = this.cheekWidth * 0.07;  // .04 default
             this.inner = new Vector(this.innerPct * this.cheekWidth, innerScale);
             this.outer = new Vector(this.outerPct * this.cheekWidth, outerScale);
+			
+			// what we had before
+            //this.innerLowerTheta = -1 + 2.5 * utilities.pnoise(.5 * time.total + 400 + this.starID);
+            //this.outerLowerTheta = -.1 + 2.5 * utilities.pnoise(.5 * time.total + 500 + this.starID);
+            
+            //emotion restriction: high lower eyelid (fear, disgust)
+            //this.innerLowerTheta = utilities.constrain(this.innerLowerTheta, -Math.PI/2, -Math.PI/4);
+            //this.innerLowerTheta = utilities.constrain(this.innerLowerTheta, Math.PI/4, Math.PI/2);
+			//this.innerLowerTheta = -.5; //Math.PI/4;
+			//this.innerUpperTheta = -Math.PI/2; //7*Math.PI/4;
+			this.innerUpperTheta = -1.5*Math.PI/4 -Math.PI/4 * utilities.pnoise(.5 * time.total + 400 + this.starID);
+			this.outerUpperTheta = Math.PI/2 +Math.PI/10 * utilities.pnoise(.5 * time.total + 600 + this.starID);
+			this.innerLowerTheta = -Math.PI/4 * utilities.pnoise(.5 * time.total + 500 + this.starID);
 
-            this.innerLowerTheta = -1 + 2.5 * utilities.pnoise(.5 * time.total + 400 + this.starID);
-            this.outerLowerTheta = -.1 + 2.5 * utilities.pnoise(.5 * time.total + 500 + this.starID);
-
-            var liftScale = this.cheekWidth * .25;
+            //var liftScale = this.cheekWidth * 25;
             
             var blink = utilities.sCurve(utilities.pnoise(time.total*.2  + 10*this.starID), 4);
             blink = Math.max(0, (Math.abs(2*blink - 1))*1.4 - .4);
-            this.innerLift = 2*blink;
+            //utilities.debugOutput("blink: " + blink);
+            this.innerLift = blink; //default: 2*blink
             this.outerLift = this.innerLift;
-            this.innerUpperTheta = this.innerLowerTheta + -.6 * this.innerLift;
-            this.outerUpperTheta = this.outerLowerTheta + 1.6 * this.outerLift;
+            this.innerUpperTheta = this.innerUpperTheta * this.innerLift;
+            this.outerUpperTheta = this.outerUpperTheta * this.outerLift+ Math.PI;
+            //utilities.debugOutput("OUT: " + this.outerUpperTheta);
 
             this.innerUpperTheta = utilities.constrain(this.innerUpperTheta, -Math.PI / 2, Math.PI / 2);
+            //this.outerUpperTheta = utilities.constrain(this.innerUpperTheta, Math.PI / 2, 3*Math.PI / 2);
 
             //this.innerUpperTheta = -Math.PI/2;
 
-            var innerLowerSlantScale = this.cheekWidth * .2;
+            var innerLowerSlantScale = this.cheekWidth * .2; //*blink not working so well
             // default : .2
             var outerLowerSlantScale = this.cheekWidth * .15;
             // default: .15
-            var innerUpperSlantScale = outerLowerSlantScale;
+            var innerUpperSlantScale = this.cheekWidth * .45;//outerLowerSlantScale; //
             // default: same as outerLowerSlantScale
-            var outerUpperSlantScale = this.cheekWidth * .1;
+            var outerUpperSlantScale = this.cheekWidth * .3; //.3;
             // default: .1
+            
             var additionalUpperSlantScale = this.cheekWidth * 0.075;
 
             this.innerLowerSlant.setToPolar(innerLowerSlantScale, this.innerLowerTheta);
